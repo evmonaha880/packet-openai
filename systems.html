@@ -1,0 +1,425 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evan Monahan · Working Systems</title>
+<script src="tracker.js" async></script>
+<style>
+  :root {
+    --paper: #FBFAF7;
+    --ink: #191917;
+    --ink-soft: #5C5A53;
+    --rule: #DFDCD2;
+    --inset: #F3F1EA;
+    --accent: #1F6B4C;
+    --signal: #B3391F;
+    --ticket-paper: #FFFFFF;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #171613;
+      --ink: #E9E7DF;
+      --ink-soft: #A09E93;
+      --rule: #33322C;
+      --inset: #1F1E1A;
+      --accent: #5FBE92;
+      --signal: #E0704B;
+      --ticket-paper: #1C1B17;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #171613;
+    --ink: #E9E7DF;
+    --ink-soft: #A09E93;
+    --rule: #33322C;
+    --inset: #1F1E1A;
+    --accent: #5FBE92;
+    --signal: #E0704B;
+    --ticket-paper: #1C1B17;
+  }
+  :root[data-theme="light"] {
+    --paper: #FBFAF7;
+    --ink: #191917;
+    --ink-soft: #5C5A53;
+    --rule: #DFDCD2;
+    --inset: #F3F1EA;
+    --accent: #1F6B4C;
+    --signal: #B3391F;
+    --ticket-paper: #FFFFFF;
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: Charter, 'Iowan Old Style', Georgia, 'Times New Roman', serif;
+    font-size: 1.06rem;
+    line-height: 1.62;
+    margin: 0;
+    padding: 0 1.25rem;
+  }
+  .page {
+    max-width: 41rem;
+    margin: 0 auto;
+    padding: 4.5rem 0 5rem;
+  }
+  .mono {
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  }
+  p { margin: 0 0 1.1rem; }
+  a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2.5px;
+  }
+  a:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  header.masthead { margin-bottom: 3.25rem; }
+  .kicker {
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0 0 1rem;
+  }
+  h1 {
+    font-size: clamp(2rem, 6vw, 2.7rem);
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    line-height: 1.12;
+    margin: 0 0 1.4rem;
+    text-wrap: balance;
+  }
+  .lede { font-size: 1.13rem; }
+  .boundary {
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-top: 1.3rem;
+  }
+
+  .verify {
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    margin: 2rem 0 0;
+    padding: 0.9rem 0;
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 0.8rem;
+    line-height: 1.9;
+  }
+  .verify .vlabel {
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-size: 0.72rem;
+  }
+  .verify ul { list-style: none; margin: 0.2rem 0 0; padding: 0; }
+  .verify li { overflow-wrap: anywhere; }
+
+  section { margin: 3.4rem 0 0; }
+  .eyebrow {
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.5rem;
+  }
+  section.broke .eyebrow { color: var(--signal); }
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin: 0 0 1rem;
+    text-wrap: balance;
+  }
+  .figure {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .clockfig { margin: 1.9rem 0 0; }
+  .clockfig svg { width: 100%; height: auto; display: block; }
+  .clk-rail { stroke: var(--rule); stroke-width: 1.5; }
+  .clk-hr { stroke: var(--ink-soft); stroke-width: 1; opacity: 0.45; }
+  .clk-sync { stroke: var(--accent); stroke-width: 2; }
+  .clk-beat { fill: var(--signal); }
+  .clk-reap { stroke: var(--ink-soft); fill: none; stroke-width: 1.5; }
+  .clk-band { fill: var(--accent); opacity: 0.11; }
+  .clk-axis { fill: var(--ink-soft); font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; }
+  .clk-peak { fill: var(--accent); font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 10px; letter-spacing: 0.12em; }
+  .clockfig figcaption, .stackfig figcaption {
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 0.76rem;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    margin-top: 0.7rem;
+  }
+
+  .stackfig { margin: 1.9rem 0 0; }
+  .stackfig svg { width: 100%; height: auto; display: block; }
+  .stk-box { fill: none; stroke: var(--rule); stroke-width: 1.5; }
+  .stk-sem { fill: var(--accent); opacity: 0.08; }
+  .stk-sembox { fill: none; stroke: var(--accent); stroke-width: 1.5; }
+  .stk-arrow { stroke: var(--accent); stroke-width: 1.5; }
+  .stk-head { fill: var(--accent); }
+  .stk-title { fill: var(--accent); font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 13px; letter-spacing: 0.09em; }
+  .stk-sub { fill: var(--ink-soft); font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 11px; }
+
+  details {
+    background: var(--inset);
+    border-left: 2px solid var(--rule);
+    margin: 1.25rem 0 0;
+    padding: 0.75rem 1.1rem;
+  }
+  details[open] { padding-bottom: 1rem; }
+  summary {
+    cursor: pointer;
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    list-style-position: outside;
+  }
+  summary:hover { color: var(--ink); }
+  details p { font-size: 0.98rem; margin-top: 0.9rem; }
+  details p:last-child { margin-bottom: 0.2rem; }
+
+  .ticket {
+    background: var(--ticket-paper);
+    border: 1px solid var(--rule);
+    border-top: 2px dashed var(--rule);
+    border-bottom: 2px dashed var(--rule);
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 0.84rem;
+    line-height: 1.6;
+    margin: 1.1rem 0;
+    padding: 0.9rem 1.1rem 1rem;
+  }
+  .ticket-head {
+    color: var(--signal);
+    font-size: 0.74rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 0 0 0.55rem;
+  }
+  .ticket p { font-family: Charter, 'Iowan Old Style', Georgia, serif; font-size: 0.97rem; margin: 0 0 0.6rem; }
+  .ticket p:last-child { margin-bottom: 0; }
+  .ticket .tk-label { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+
+  .shelf { list-style: none; margin: 1.2rem 0 0; padding: 0; }
+  .shelf li { border-top: 1px solid var(--rule); padding: 0.85rem 0; }
+  .shelf li:last-child { border-bottom: 1px solid var(--rule); }
+  .shelf .what { display: block; }
+  .shelf .where {
+    display: block;
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    margin-top: 0.2rem;
+    overflow-wrap: anywhere;
+  }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+  }
+  footer p { margin-bottom: 0.7rem; }
+
+  @media print {
+    body { background: #fff; color: #000; }
+    details { border-left-color: #999; }
+    a { color: #000; }
+    .ticket { border-color: #999; }
+  }
+</style>
+
+<div class="page">
+
+  <p style="font-family:ui-monospace,Menlo,monospace;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 1.5rem;"><a href="index.html" style="text-decoration:none;">&larr; Packet</a></p>
+
+  <header class="masthead">
+    <p class="kicker">Evan Monahan &middot; July 2026 &middot; shared privately</p>
+    <h1>The systems I run, and what broke along the way</h1>
+    <p class="lede figure">I run my work on a fleet of 28 scheduled agents, built with Claude Code, on a Mac mini in my apartment. On the morning of July 6 the fleet ran 32 jobs with zero false alarms. That was one morning's run. Some mornings a job dies, and the ticket printer says so. This page is the part of that work I can show.</p>
+    <p class="boundary">I am building a consulting firm on this system. As of July that means one live engagement and nothing closed, which is why the code and the client work stay private while everything else here carries a number you can ask me about. Everything public is linked below.</p>
+    <div class="verify">
+      <span class="vlabel">Check the work</span>
+      <ul>
+        <li><a href="https://github.com/evmonaha880/latitude-longitude">github.com/evmonaha880/latitude-longitude</a> &middot; RL environments, source</li>
+        <li><a href="https://evmonaha880.github.io/latitude-longitude/disruption-timeline.html">evmonaha880.github.io/latitude-longitude/disruption-timeline.html</a> &middot; interactive timeline</li>
+        <li><a href="https://evanmonahan1888.substack.com">evanmonahan1888.substack.com</a> &middot; the essays</li>
+      </ul>
+    </div>
+  </header>
+
+  <section>
+    <p class="eyebrow">The operating system</p>
+    <h2>Twenty-eight scheduled agents and a heartbeat</h2>
+    <p class="figure">Laika is the system that runs my day. This week's schedule holds 28 agents; two more are installed but switched off. The roster: the 6:40 intelligence brief, the 7:30 morning sweep, watchers across 30 job boards, a database sync on a four-hour cycle, an hourly on-site backup and a weekly encrypted offsite one, and the health checks that watch all of the above. Twice a day a heartbeat verifies that each scheduled output actually shipped, and when one did not, it prints an error ticket on a receipt printer beside my desk. At 6:25 each morning, before the heaviest hour of the schedule, a supervisor process clears the failure patterns I have seen before.</p>
+
+    <figure class="clockfig" aria-labelledby="clockcap">
+      <svg viewBox="0 0 640 120" role="img" aria-label="A 24-hour view of the fleet schedule: a backup tick every hour, a database sync every four hours, two daily heartbeat checks, an idle-session reaper at 4am, and a dense peak hour from 6 to 8am.">
+        <rect class="clk-band" x="164" y="18" width="52" height="72"/>
+        <text class="clk-peak" x="190" y="13" text-anchor="middle">PEAK</text>
+        <line class="clk-rail" x1="8" y1="88" x2="632" y2="88"/>
+        <!-- hourly on-site backup: a tick every hour -->
+        <g class="clk-hr">
+          <line x1="8" y1="88" x2="8" y2="93"/><line x1="34" y1="88" x2="34" y2="93"/><line x1="60" y1="88" x2="60" y2="93"/><line x1="86" y1="88" x2="86" y2="93"/><line x1="112" y1="88" x2="112" y2="93"/><line x1="138" y1="88" x2="138" y2="93"/><line x1="164" y1="88" x2="164" y2="93"/><line x1="190" y1="88" x2="190" y2="93"/><line x1="216" y1="88" x2="216" y2="93"/><line x1="242" y1="88" x2="242" y2="93"/><line x1="268" y1="88" x2="268" y2="93"/><line x1="294" y1="88" x2="294" y2="93"/><line x1="320" y1="88" x2="320" y2="93"/><line x1="346" y1="88" x2="346" y2="93"/><line x1="372" y1="88" x2="372" y2="93"/><line x1="398" y1="88" x2="398" y2="93"/><line x1="424" y1="88" x2="424" y2="93"/><line x1="450" y1="88" x2="450" y2="93"/><line x1="476" y1="88" x2="476" y2="93"/><line x1="502" y1="88" x2="502" y2="93"/><line x1="528" y1="88" x2="528" y2="93"/><line x1="554" y1="88" x2="554" y2="93"/><line x1="580" y1="88" x2="580" y2="93"/><line x1="606" y1="88" x2="606" y2="93"/><line x1="632" y1="88" x2="632" y2="93"/>
+        </g>
+        <!-- database sync: every four hours -->
+        <g class="clk-sync">
+          <line x1="8" y1="79" x2="8" y2="88"/><line x1="112" y1="79" x2="112" y2="88"/><line x1="216" y1="79" x2="216" y2="88"/><line x1="320" y1="79" x2="320" y2="88"/><line x1="424" y1="79" x2="424" y2="88"/><line x1="528" y1="79" x2="528" y2="88"/><line x1="632" y1="79" x2="632" y2="88"/>
+        </g>
+        <!-- 4:00 reaper -->
+        <circle class="clk-reap" cx="112" cy="88" r="4"/>
+        <!-- heartbeats: 8:20 and 22:50 -->
+        <circle class="clk-beat" cx="225" cy="88" r="3.5"/>
+        <circle class="clk-beat" cx="602" cy="88" r="3.5"/>
+        <!-- hour axis -->
+        <text class="clk-axis" x="8" y="108" text-anchor="start">00</text>
+        <text class="clk-axis" x="164" y="108" text-anchor="middle">06</text>
+        <text class="clk-axis" x="320" y="108" text-anchor="middle">12</text>
+        <text class="clk-axis" x="476" y="108" text-anchor="middle">18</text>
+        <text class="clk-axis" x="632" y="108" text-anchor="end">24</text>
+      </svg>
+      <figcaption id="clockcap">A day on the fleet. Fine ticks are the hourly on-site backup; the taller green marks are the database sync, every four hours; the two dots are the heartbeat that confirms every output shipped, morning and night; the open ring at 4:00 is the reaper that closes idle sessions before they pile up. The shaded band is the peak hour &mdash; 6:25 supervisor, 6:40 intelligence brief, 7:30 morning sweep &mdash; which is why the supervisor runs first.</figcaption>
+    </figure>
+
+    <details>
+      <summary>How the reliability layer works</summary>
+      <p>The heartbeat trusts artifacts over exit codes because both failure directions are real: a job can exit 0 and ship nothing, and a job can exit dirty after shipping everything. So the check reads the output itself: did today's note get today's block, is the database fresh, did the backup snapshot advance.</p>
+      <p>Every change to the fleet has to pass a smoke test that runs inside the scheduler's own context, because a job that works in an interactive terminal can still fail under launchd, where permissions differ. Long-running agents sit under an escalating watchdog: a stall detector samples the process before killing it, so every kill leaves a diagnosis behind. The Claude CLI is pinned to a known-good version. When a synthesis step wedges &mdash; which still happens &mdash; a tool-free watchdog catches the stall within four minutes and retries from a clean process, instead of trying to outguess which version is at fault.</p>
+      <p>The mini is the only machine that matters. The laptop and phone reach it over a private mesh network, so the same system answers wherever I am.</p>
+    </details>
+  </section>
+
+  <section class="broke">
+    <p class="eyebrow">The incident log</p>
+    <h2>What broke</h2>
+    <p>Four failures since June were serious enough to get written post-mortems. One of the guards they exposed is still unbuilt. These tickets are the honest version of the section above.</p>
+
+    <div class="ticket">
+      <p class="ticket-head">Jun 23 &middot; every overnight job killed</p>
+      <p><span class="tk-label">What happened:</span> the whole overnight fleet died inside a 90-minute window, silently.</p>
+      <p><span class="tk-label">Root cause:</span> operator hygiene. Ten terminal sessions I had abandoned over the prior week were holding about 1.5&nbsp;GB of swap, and macOS killed background jobs to relieve the pressure.</p>
+      <p><span class="tk-label">Fix:</span> a lock so only one heavy agent runs at a time, and a 4&nbsp;a.m. reaper that closes idle sessions before they pile up.</p>
+    </div>
+
+    <div class="ticket">
+      <p class="ticket-head">Jun 25 &middot; bot alive, not listening</p>
+      <p><span class="tk-label">What happened:</span> the Slack bot showed a healthy process for 36 hours while its connection sat wedged in a silent reconnect loop.</p>
+      <p><span class="tk-label">Root cause:</span> the process never died, so the operating system's auto-restart never fired.</p>
+      <p><span class="tk-label">Fix:</span> the bot now exits on its own after six consecutive socket errors, which forces a restart, and the heartbeat gained a separate check for recent bot activity.</p>
+    </div>
+
+    <div class="ticket">
+      <p class="ticket-head">Jul 6 &middot; 19 hours without a backup</p>
+      <p><span class="tk-label">What happened:</span> an interrupted backup at 4:18 in the afternoon broke the hourly schedule, and every retry failed quietly for 19 hours while the interface claimed the next backup was coming. The 32-job morning in the header ran hours before this started; the check that would have caught it did not exist yet.</p>
+      <p><span class="tk-label">Root cause:</span> the backup destination never remounted after the interruption. One manual mount fixed it.</p>
+      <p><span class="tk-label">Fix:</span> the heartbeat now watches backup freshness directly. The guard that would remount the disk automatically is designed and still unbuilt. It is on the list.</p>
+    </div>
+
+    <div class="ticket">
+      <p class="ticket-head">Jul 18 &middot; the brief that stalled almost every morning</p>
+      <p><span class="tk-label">What happened:</span> the intelligence brief's synthesis step froze mid-run and got killed nearly every day, blanking the morning brief.</p>
+      <p><span class="tk-label">Root cause:</span> a random stall in the synthesis call, and not the one I had blamed. I had spent the prior week building a version-chasing gate on the theory that a bad Claude release was at fault. Then three different versions wedged the same way on one morning, which proved the version was never the cause.</p>
+      <p><span class="tk-label">Fix:</span> I split one large synthesis call into five small ones that use no tools, which narrows what can stream to two events, so a stall is unambiguous within four minutes and retried from a clean process. Then I deleted the version-chasing machinery I had just built. The cleaner fix wanted a paid API key; I chose the free-tier redesign instead and wrote down why.</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Memory</p>
+    <h2>One database under everything</h2>
+    <p class="figure">Everything the system and I do ends up written down. A plain-text vault of 5,759 notes holds the projects, people, decisions, and daily journal. Under it sits a local database that mirrors the rest of my working life &mdash; a Gmail archive reaching back to 2009, the iMessage history, logged working sessions, and the embeddings that let recall work by meaning rather than keyword. Ask it a vague question and the right note still comes back. The embedding models that power that run on the machine itself; the database never syncs anywhere, and the offsite backup copy is encrypted before it leaves.</p>
+
+    <figure class="stackfig" aria-labelledby="stackcap">
+      <svg viewBox="0 0 640 190" role="img" aria-label="Three layers of recall: a semantic index, computed on local models, indexes both the vault (5,759 notes, the working set) and the lake (mail, messages, and session history, the archive).">
+        <!-- semantic layer, left -->
+        <rect class="stk-sem" x="40" y="24" width="150" height="142"/>
+        <rect class="stk-sembox" x="40" y="24" width="150" height="142"/>
+        <text class="stk-title" x="115" y="86" text-anchor="middle">SEMANTIC</text>
+        <text class="stk-title" x="115" y="103" text-anchor="middle">INDEX</text>
+        <text class="stk-sub" x="115" y="126" text-anchor="middle">on local models</text>
+        <!-- arrows: indexes both -->
+        <line class="stk-arrow" x1="190" y1="59" x2="243" y2="59"/>
+        <polygon class="stk-head" points="243,55 243,63 250,59"/>
+        <line class="stk-arrow" x1="190" y1="131" x2="243" y2="131"/>
+        <polygon class="stk-head" points="243,127 243,135 250,131"/>
+        <!-- vault -->
+        <rect class="stk-box" x="250" y="32" width="350" height="54"/>
+        <text class="stk-title" x="270" y="58" text-anchor="start">VAULT</text>
+        <text class="stk-sub" x="270" y="74" text-anchor="start">5,759 notes &#183; the working set</text>
+        <!-- lake -->
+        <rect class="stk-box" x="250" y="104" width="350" height="54"/>
+        <text class="stk-title" x="270" y="130" text-anchor="start">LAKE</text>
+        <text class="stk-sub" x="270" y="146" text-anchor="start">mail to 2009 &#183; messages &#183; sessions</text>
+      </svg>
+      <figcaption id="stackcap">A question by meaning goes into the index on the left; it reaches across both stores &mdash; the markdown vault and the archive lake &mdash; and returns the note, the message, and the journal entry that touch it. Nothing about the archive leaves the machine to make that happen.</figcaption>
+    </figure>
+
+    <details>
+      <summary>How recall works</summary>
+      <p>Three layers. The vault is the working set: plain markdown, readable in any editor, organized consistently enough that agents navigate it without special tooling. The lake is the archive: messages, mail, highlights, and session history stitched into one local SQLite database. The semantic layer indexes both with embeddings computed on the machine itself, using a small local model, so a question like "what was I working on last Tuesday" comes back with the journal entry, the messages, and the notes that touched it.</p>
+      <p>The privacy boundary is deliberate rather than absolute. Agents send what they retrieve to the Claude API while they work; that is the tool doing its job. What stays local is the archive itself: indexing runs on local models, the database syncs nowhere, and the weekly offsite copy is encrypted before upload.</p>
+    </details>
+  </section>
+
+  <section>
+    <p class="eyebrow">Knowledge pipelines</p>
+    <h2>Every card cites its page</h2>
+    <p class="figure">I distill books into knowledge bases where every card cites the page it came from, and a card that fails citation gets deleted. The formal gate has run once: on June 28, all 1,889 cards from the first 10 books passed a full citation check. The corpus has since grown to 3,335 cards across 23 books as of July 20, 2026, through the same pipeline — each batch citation-checked at extraction, with the full-corpus formal gate run once so far, at 1,889. Two smaller banks sit beside it, built the same way: 619 cards of supply-chain signal and 379 cards of consulting craft.</p>
+    <details>
+      <summary>How the pipeline verifies itself</summary>
+      <p>Extraction runs as a fan-out of about thirty agents per batch, with a separate three-agent verification pass on a stronger model behind it. The two passes are kept apart on purpose, so the reviewer never grades its own work. One large batch ran 45 blocks and 3.65&nbsp;million tokens end to end.</p>
+      <p>The gate is strict because these cards are built for paid advisory work, where an uncited claim is a liability I would own personally.</p>
+    </details>
+  </section>
+
+  <section>
+    <p class="eyebrow">Darkroom Developments</p>
+    <h2>Shipped in public</h2>
+    <p class="figure">Latitude &times; Longitude is a pair of reinforcement-learning environments that simulate GPU procurement through a supply crisis, with scenarios corroborated against real constraint data. I built them solo and entered them at a hackathon run by HUD, a Y Combinator-backed startup, on June 20. One graded rollout hit the environment's maximum reward of 1.000. That is a single rollout.</p>
+    <ul class="shelf">
+      <li>
+        <span class="what"><a href="https://evmonaha880.github.io/latitude-longitude/disruption-timeline.html">An interactive timeline of the disruption scenario</a></span>
+        <span class="where">https://evmonaha880.github.io/latitude-longitude/disruption-timeline.html</span>
+      </li>
+      <li>
+        <span class="what"><a href="https://evanmonahan1888.substack.com/p/developing-the-picture">"Developing the Picture," the opening essay &middot; June 30</a></span>
+        <span class="where">https://evanmonahan1888.substack.com/p/developing-the-picture</span>
+      </li>
+      <li>
+        <span class="what"><a href="https://evanmonahan1888.substack.com/p/a-clock-for-the-storm">"A Clock for the Storm," on the environments &middot; July 8</a></span>
+        <span class="where">https://evanmonahan1888.substack.com/p/a-clock-for-the-storm</span>
+      </li>
+      <li>
+        <span class="what"><a href="https://github.com/evmonaha880/latitude-longitude">The source, public on GitHub</a></span>
+        <span class="where">https://github.com/evmonaha880/latitude-longitude</span>
+      </li>
+    </ul>
+    <details>
+      <summary>What the environments actually test</summary>
+      <p>An agent has to buy and allocate scarce GPU capacity while a crisis moves under it, with allocations tightening and spot prices spiking mid-run. Every scenario is deterministic, so a run can be replayed and graded, and the reward is normalized against optima found by brute force rather than tuned by hand. The result I found most interesting was qualitative: in one rollout the model surfaced a three-chip sourcing strategy the scenario never suggests. I have not published that trace.</p>
+      <p>What the 1.000 does not mean: it is one graded rollout on one scenario, not an averaged benchmark, and I have not published learning curves.</p>
+    </details>
+  </section>
+
+  <footer>
+    <p>Drafted by me, refined and built with Claude Code. Every number on this page was checked against its source log or note; the fleet counts were re-verified July 20, 2026.</p>
+    <p>Laika is named for the space dog and the camera. This page is shared privately: if you have the link, I sent it to you.</p>
+    <p class="mono">Evan Monahan &middot; Tiburon, CA &middot; <a href="https://www.linkedin.com/in/evan-monahan-982ba931">https://www.linkedin.com/in/evan-monahan-982ba931</a></p>
+  </footer>
+
+</div>
+
+<script>
+  addEventListener('beforeprint', function () {
+    document.querySelectorAll('details').forEach(function (d) { d.setAttribute('open', ''); });
+  });
+</script>

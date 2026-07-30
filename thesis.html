@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Just Build More Boxes — Evan Monahan</title>
+  <meta name="description" content="Why the shipping-container industry's answer to not knowing where its boxes were was to build seven million more, and why that makes supply chain a natural fit for AI.">
+  <link rel="stylesheet" href="style.css">
+  <script src="tracker.js" async></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%23234a6c'/><rect x='3' y='3' width='10' height='10' fill='none' stroke='%23f4f4f0' stroke-width='1'/></svg>">
+</head>
+<body>
+<div class="wrap">
+  <a class="backlink" href="index.html">← Packet</a>
+
+  <article class="article">
+    <header class="article-head">
+      <p class="eyebrow">Thesis · Doc 08</p>
+      <h1>Just Build More Boxes</h1>
+      <p class="standfirst">The glut, the monopoly, and the deficit, and why a shipping container is a natural fit for an AI agent.</p>
+    </header>
+
+    <p class="lead">
+      When the system couldn’t get boxes to the right place, it didn’t get smarter. It just
+      <strong>built more.</strong> China’s container factories ran flat out, the global box pool
+      ballooned, and within about eighteen months the shortage flipped into a glut of millions of
+      idle containers rotting in depots. The industry’s answer to a coordination problem was a
+      manufacturing problem.
+    </p>
+
+    <p class="pull">You cannot manufacture your way out of a problem that is really about knowing where things are and acting on it.</p>
+
+    <h3>Who actually makes the boxes</h3>
+    <p>
+      This surprises everyone, including supply-chain people: container manufacturing is one of the
+      most concentrated industries on earth, and it is almost entirely in one country.
+    </p>
+    <ul>
+      <li>Virtually <strong>100% of the world’s shipping containers are built in China.</strong> Drewry puts Chinese factories at 96%+ of dry cargo containers and 100% of reefers.</li>
+      <li><strong>Three companies dominate.</strong> In Q1 2021 the top three Chinese builders made 82% of global production: CIMC (~42%, the largest in the world), Dong Fang International, a COSCO unit (~26%), and CXIC Group (~14%).</li>
+      <li>CIMC is state-controlled: US authorities have concluded its operations are ultimately controlled by the Chinese government. In 2021 CIMC <em>agreed to buy Maersk’s container-manufacturing arm</em>, which would have removed one of the last non-Chinese producers — until US and German antitrust regulators blocked the deal in 2022 and Maersk wound the unit down itself. The state didn’t even need the deal to hold its ~80% share.</li>
+    </ul>
+    <p>
+      The structural fact is that the supply of the asset itself is governed by a factory throttle,
+      build more or build less, rather than by where boxes are actually needed. There is no real
+      elasticity.
+    </p>
+
+    <h3>The whiplash</h3>
+    <p>The whole swing took about twenty-four months.</p>
+    <p>
+      <strong>Shortage (2020–21).</strong> COVID demand surged, boxes got stranded at
+      congested ports, carriers couldn’t get equipment where it was needed, and rates spiked so
+      hard that carriers could charge a premium just to <em>guarantee</em> a box.
+    </p>
+    <p>
+      <strong>Panic-build (2021–22).</strong> Carriers responded the only way the system
+      knows how: order more. Production hit records, <strong>7.1M TEU built in 2021</strong> and
+      3.8M in 2022. The global pool jumped ~13% to nearly 50M TEU, roughly three times the normal
+      growth trend, even as trade volumes barely moved.
+    </p>
+    <p>
+      <strong>Glut (2022–23).</strong> Demand softened and the new boxes had nowhere to go.
+      A surplus of ~6M TEU of idle containers piled up; freight rates collapsed ~79%
+      year-over-year (Drewry World Container Index). New production cratered to 1.3–1.5M TEU in 2023, down from 7.1M just two years
+      prior. Depots literally ran out of space to store the empties.
+    </p>
+    <p>
+      <strong>7.1M → 3.8M → 1.4M TEU built, three years running.</strong> The industry slammed the
+      accelerator, then the brake, and got rich-then-broke whiplash, because it was steering by a
+      rear-view mirror.
+    </p>
+
+    <h3>What the trade deficit has to do with all of it</h3>
+    <p>
+      A container is a one-way vehicle for a two-way accounting problem. The US runs a massive goods
+      trade deficit with China; it imports far more than it exports back. In 2020 the US imported
+      ~$435B from China and exported only ~$125B the other way. So follow a single box:
+    </p>
+    <ul>
+      <li>It arrives on the West Coast <strong>full</strong> of Chinese goods. Earning.</li>
+      <li>It’s unloaded. Now the US needs to send something back in it, but it doesn’t export enough physical goods to China to fill all those boxes.</li>
+      <li>The box is now a <strong>liability sitting on the wrong continent</strong>: ship it back empty (pay to haul air), or let it sit (pay storage and detention).</li>
+      <li>Either way, the trade imbalance has converted a productive asset into a cost. Sixty million times a year.</li>
+    </ul>
+    <p>
+      And it nests. Boxes land on the West Coast (LA/Long Beach is ~40% of US imports), get railed
+      inland to deliver goods, then strand in the interior or on the East Coast, far from the ports
+      where they’re needed to refill. The deficit creates the macro one-way flow; geography creates
+      a second one-way flow inside it.
+    </p>
+
+    <h3>What an agent actually adds</h3>
+    <p>
+      The trade deficit means the “right place” for a box is always moving away from where boxes
+      accumulate. It is a permanent, large-scale, real-time imbalance, and you cannot build your way
+      out of it: more boxes just add liabilities to the surplus side.
+    </p>
+    <p>
+      Here is the honest part. Most of the steady-state version of this is not new. Repositioning
+      empty containers across a network of known flows is a classic optimization problem, and the
+      field has had good tools for it for decades: linear programming, network models, the machinery
+      operations research already brings to fleet and inventory balancing. On a stable map, a solver
+      handles it.
+    </p>
+    <p>
+      What breaks that tidy picture is everything the map leaves out. The flows are not stable. A
+      port congests, a sailing gets blanked, a customer’s forecast moves, a box that was supposed to
+      refill in Chicago strands in Memphis. The data is late and incomplete, the disruptions arrive
+      faster than a planning cycle, and the response has to reach across booking, repositioning, and
+      matching systems that were never built to talk to each other. Sensing that gap and acting on
+      it continuously is the part no solver on a fixed map, and no human working a queue, keeps up
+      with. That is where an agent earns its place, and it is a narrower claim than “AI will run the
+      network.”
+    </p>
+    <p class="pull">We perfected the body of the container in 1956; we never built its brain.</p>
+
+    <div class="sources">
+      <p><strong>Sources.</strong> Manufacturing concentration: Drewry via FreightWaves/American Shipper (2021); FMC Container &amp; Chassis Manufacturing Report (2022); CIMC corporate filings. Glut and whiplash: Maritime Executive, The Loadstar, Caixin Global, Drewry World Container Index (2022–23). Deficit figures: Sea-Intelligence / Solverminds; US Census trade data.</p>
+    </div>
+  </article>
+</div>
+</body>
+</html>
