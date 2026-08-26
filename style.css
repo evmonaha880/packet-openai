@@ -398,3 +398,14 @@ a:hover { color: var(--blueprint-2); }
   .identity { grid-template-columns: 1fr; text-align: left; }
   .portrait { width: 72px; height: 72px; }
 }
+
+/* ---------- résumé card: the card opens the page, the PDF chip opens the file ---------- */
+.doc-stretch { color: inherit; text-decoration: none; }
+.doc-stretch::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+.doc:has(.doc-stretch:focus-visible) { background: var(--paper-raised); padding-left: 1rem; }
+.doc:has(.doc-stretch:focus-visible)::before { transform: scaleY(1); }
+a.tag-dl {
+  position: relative; z-index: 2; text-decoration: none; cursor: pointer;
+  transition: color .15s ease, border-color .15s ease;
+}
+a.tag-dl:hover, a.tag-dl:focus-visible { color: var(--blueprint); border-color: var(--blueprint); outline: none; }

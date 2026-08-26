@@ -27,7 +27,7 @@
 
     // 2. Which of the packet items got clicked (PDF opens + outbound links).
     document.addEventListener("click", function (e) {
-      var a = e.target.closest ? e.target.closest("a.doc[data-doc]") : null;
+      var a = e.target.closest ? e.target.closest("a[data-doc]") : null;
       if (!a) return;
       var id = a.getAttribute("data-doc");
       fire("click-" + id, "Click: " + id);
