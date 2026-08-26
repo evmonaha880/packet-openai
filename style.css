@@ -368,19 +368,19 @@ a:hover { color: var(--blueprint-2); }
 
 /* ---------- print (résumé PDF) ---------- */
 @media print {
-  @page { margin: 0.5in 0.6in; }
+  @page { margin: 0.42in 0.55in; }
   :root { --paper:#fff; --ink:#000; --ink-2:#222; --ink-3:#555; --rule:#bbb; --blueprint:#234a6c; }
-  body { font-size: 9.3pt; line-height: 1.24; background:#fff; }
+  body { font-size: 8.5pt; line-height: 1.16; background:#fff; }
   .wrap { max-width:none; padding:0; }
   .backlink, .dl-btn, .theme-toggle, .colophon { display: none !important; }
   .article { max-width: none; padding: 0; }
-  .article-head { padding: 0 0 0.25rem; margin-bottom: 0.4rem; border-bottom-color:#000; }
-  .article-head h1 { font-size: 17pt; margin: 0.1rem 0; }
+  .article-head { padding: 0 0 0.2rem; margin-bottom: 0.3rem; border-bottom-color:#000; }
+  .article-head h1 { font-size: 15pt; margin: 0.05rem 0; }
   .article-head .eyebrow { display:none; }
-  .lead { font-size: 9.3pt; margin: 0.3rem 0; }
-  .article h2 { font-size: 10.5pt; margin: 0.5rem 0 0.15rem; }
-  .rz-job { margin-top: 0.4rem; break-inside: avoid; }
-  .rz-job h3 { font-size: 10pt; }
+  .lead, .article .lead { font-size: 8.5pt; margin: 0.25rem 0; }
+  .article h2 { font-size: 9.6pt; margin: 0.35rem 0 0.1rem; }
+  .rz-job { margin-top: 0.3rem; break-inside: avoid; }
+  .rz-job h3 { font-size: 9.4pt; }
   .rz-job .rz-sub { margin: 0.05rem 0 0.2rem; font-size:8.8pt; }
   .rz-job .rz-when { font-size: 8pt; }
   .article ul { padding-left: 0.95rem; margin: 0.15rem 0; }
